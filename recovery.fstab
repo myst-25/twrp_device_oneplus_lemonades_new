@@ -1,0 +1,15 @@
+# Dynamic partitions (logical A/B)
+
+system          /system         ext4    ro,barrier=1        wait,slotselect,logical,first_stage_mount
+vendor          /vendor         ext4    ro,barrier=1        wait,slotselect,logical,first_stage_mount
+product         /product        ext4    ro,barrier=1        wait,slotselect,logical,first_stage_mount
+system_ext      /system_ext     ext4    ro,barrier=1        wait,slotselect,logical,first_stage_mount
+odm             /odm            ext4    ro,barrier=1        wait,slotselect,logical,first_stage_mount
+
+# Metadata (required for FBE v2)
+
+metadata        /metadata       ext4    rw                  wait,formattable
+
+# Userdata (FBE v2 encryption)
+
+userdata        /data           f2fs    rw                  wait,check,formattable,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized+wrappedkey_v0,metadata_encryption=aes-256-xts:wrappedkey_v0,keydirectory=/metadata/vold/metadata_encryption
